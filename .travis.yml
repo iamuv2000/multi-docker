@@ -1,0 +1,26 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t iamuv2000/react-test -f ./client/Dockerfile.dev ./client
+
+scripts:
+  - docker run -e CI=true iamuv2000/react-test npm test
+
+after_success:
+  - docker build -t iamuv2000/multi-client ./client
+  - docker build -t iamuv2000/multi-nginx ./ngnix
+  - docker build -t iamuv2000/multi-server ./server
+  - docker build -t iamuv2000/multi-worker ./worker
+
+  #Log in to docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  #Take those images and push to docker hub
+  - docker push iamuv2000/multi-client
+  - docker push iamuv2000/multi-nginx
+  - docker push iamuv2000/multi-server
+  - docker push iamuv2000/multi-worker
+
+
