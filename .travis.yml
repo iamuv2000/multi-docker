@@ -10,7 +10,7 @@ scripts:
 
 after_success:
   - docker build -t iamuv2000/multi-client ./client
-  - docker build -t iamuv2000/multi-nginx ./ngnix
+  - docker build -t iamuv2000/multi-nginx  ./nginx 
   - docker build -t iamuv2000/multi-server ./server
   - docker build -t iamuv2000/multi-worker ./worker
 
